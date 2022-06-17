@@ -1,8 +1,6 @@
 #include <iostream>
+#include "Helper.h"
 
-int DisplayRandomQuestion(const char* questionList[], int numOfQuestions, const char* answerList[][4]);
-int ReadAndValidateInput(const char* message, int minSelection, int maxSelection);
-void resetConsoleBuffer();
 bool isCorrect(int questionsIndex, int userSelection);
 
 int main()
@@ -20,8 +18,8 @@ int main()
 	bool keepGoing = true;
 	while (keepGoing)
 	{
-		int questionIndex = DisplayRandomQuestion(questions, 4, answers);
-		int userSelection = ReadAndValidateInput("Choose an answer 1-4: ", 1, 4);
+		int questionIndex = ConsoleHelper::DisplayRandomQuestion(questions, 4, answers);
+		int userSelection = ConsoleHelper::ReadAndValidateInput("Choose an answer 1-4: ", 1, 4);
 		bool isUserCorrect = isCorrect(questionIndex, userSelection);
 
 		if (isUserCorrect)
@@ -29,7 +27,7 @@ int main()
 		else
 			std::cout << "I am sorry but that is not the correct answer.";
 
-		int continueOrNot = ReadAndValidateInput(" Press 1 to continue, Press 2 to quit: ", 1, 2);
+		int continueOrNot = ConsoleHelper::ReadAndValidateInput(" Press 1 to continue, Press 2 to quit: ", 1, 2);
 		if (continueOrNot == 1)
 		{
 			continue;
@@ -44,42 +42,6 @@ int main()
 	system("pause");
 }
 
-//will return a number to be able to see later what question was used.
-int DisplayRandomQuestion(const char* questionList[], int numOfQuestions, const char* answerList[][4])
-{
-
-	//this will getting the number of questions from the array. dividing by size of void* because it is dependent on if running in 64 or 32 bit.
-	int randomIndex = rand() % numOfQuestions;
-	std::cout << questionList[randomIndex] << std::endl << std::endl;
-	for (int i = 0; i < sizeof(answerList[randomIndex]) / 8; i++)
-	{
-		std::cout << answerList[randomIndex][i] << std::endl;
-	}
-
-	return randomIndex;
-}
-
-int ReadAndValidateInput(const char* message, int minSelection, int maxSelection)
-{
-	int answerSelection = 0;
-
-	while (true)
-	{
-		std::cout << message;
-		std::cin >> answerSelection;
-		if (std::cin.fail() || (answerSelection < minSelection || answerSelection > maxSelection))
-		{
-			resetConsoleBuffer();
-			std::cout << "\nYour input was not valid" << std::endl;
-		}
-			
-		else
-			break;
-	}
-
-	resetConsoleBuffer();
-	return answerSelection;
-}
 
 bool isCorrect(int questionsIndex, int userSelection)
 {
@@ -95,9 +57,4 @@ bool isCorrect(int questionsIndex, int userSelection)
 
 	return correctOrNot;
 
-}
-void resetConsoleBuffer()
-{
-	std::cin.clear();
-	std::cin.ignore(INT_MAX, '\n');
 }

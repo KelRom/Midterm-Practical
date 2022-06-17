@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="Midterm_Practical.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Helper.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
